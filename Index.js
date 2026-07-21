@@ -272,6 +272,11 @@ app.get("/", (req, res) => {
   res.send("API de Netflix (series y peliculas) funcionando");
 });
 
-app.listen(PORT, () => {
-  console.log("Servidor iniciado en http://localhost:" + PORT);
-});
+// Solo escucha en local, no en Vercel
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log("Servidor iniciado en http://localhost:" + PORT);
+  });
+}
+
+module.exports = app;
