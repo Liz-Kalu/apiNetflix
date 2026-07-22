@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Netflix - Base de Datos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="netflix-header">
+        <h1 class="logo">NETFLIX</h1>
+    </header>
+
+    <div class="switch-tabs">
+        <button class="tab-btn active" data-tab="peliculas"><i class="fa-solid fa-film"></i> Películas</button>
+        <button class="tab-btn" data-tab="series"><i class="fa-solid fa-tv"></i> Series</button>
+    </div>
+
+    <!-- FORMULARIO PELÍCULAS -->
+    <div id="form-peliculas" class="form-wrapper">
+        <h2 id="tituloFormPeliculas">Registrar película</h2>
+
+        <form id="formularioPeliculas">
+            <input type="hidden" id="peliculaId">
+            <div class="form-grid">
+                <input type="text" id="tituloPelicula" placeholder="Título" required>
+                <input type="text" id="generoPelicula" placeholder="Género" required>
+                <input type="number" id="añoPelicula" placeholder="Año" required>
+                <input type="number" id="duracionPelicula" placeholder="Duración (min)" required>
+                <input type="text" id="idiomaPelicula" placeholder="Idioma" required>
+                <input type="number" id="calificacionPelicula" placeholder="Calificación" min="0" max="10" step="0.1" required>
+                
+            </div>
+            <div class="form-actions">
+                <button type="submit" id="btnGuardarPelicula"><i class="fa-solid fa-floppy-disk"></i> Guardar película</button>
+                <button type="button" id="btnCancelarPelicula" class="btn-cancelar" style="display:none;">Cancelar edición</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- FORMULARIO SERIES -->
+    <div id="form-series" class="form-wrapper" style="display:none;">
+        <h2 id="tituloFormSeries">Registrar serie</h2>
+
+        <form id="formularioSeries">
+            <input type="hidden" id="serieId">
+            <div class="form-grid">
+                <input type="text" id="tituloSerie" placeholder="Título" required>
+                <input type="text" id="generoSerie" placeholder="Género" required>
+                <input type="number" id="añoSerie" placeholder="Año" required>
+                <input type="number" id="temporadasSerie" placeholder="Temporadas" required>
+                <input type="number" id="episodiosSerie" placeholder="Episodios" required>
+                <input type="text" id="idiomaSerie" placeholder="Idioma" required>
+                <input type="number" id="calificacionSerie" placeholder="Calificación" min="0" max="10" step="0.1" required>
+                
+            </div>
+            <div class="form-actions">
+                <button type="submit" id="btnGuardarSerie"><i class="fa-solid fa-floppy-disk"></i> Guardar serie</button>
+                <button type="button" id="btnCancelarSerie" class="btn-cancelar" style="display:none;">Cancelar edición</button>
+            </div>
+        </form>
+    </div>
+
+    <hr>
+
+    <section id="tab-peliculas" class="tab-content active">
+        <div id="listaPeliculas" class="cards-grid"></div>
+    </section>
+
+    <section id="tab-series" class="tab-content">
+        <div id="listaSeries" class="cards-grid"></div>
+    </section>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>
