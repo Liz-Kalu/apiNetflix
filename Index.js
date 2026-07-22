@@ -11,7 +11,6 @@ app.use(morgan("dev"));
 
 const PORT = 3000;
 
-// ==================== CONEXIÓN A MONGODB ATLAS ====================
 const MONGO_URI = "mongodb+srv://grupo:grupo@servidorprueba.ygegryf.mongodb.net/netflix";
 
 mongoose.connect(MONGO_URI)
@@ -22,8 +21,6 @@ mongoose.connect(MONGO_URI)
     console.error("Error al conectar con MongoDB:", error);
   });
 
-// ==================== SCHEMAS ====================
-
 const seriesSchema = new mongoose.Schema(
   {
     titulo: { type: String, required: true, trim: true },
@@ -33,7 +30,6 @@ const seriesSchema = new mongoose.Schema(
     episodios: { type: Number, required: true, min: 1 },
     idioma: { type: String, required: true, trim: true },
     calificacion: { type: Number, required: true, min: 0, max: 10 },
-    poster: { type: String, required: false, trim: true },
     nc: { type: String, required: false, trim: true }
   },
   { timestamps: true }
@@ -47,7 +43,6 @@ const peliculasSchema = new mongoose.Schema(
     duracion: { type: Number, required: true, min: 1 },
     idioma: { type: String, required: true, trim: true },
     calificacion: { type: Number, required: true, min: 0, max: 10 },
-    poster: { type: String, required: false, trim: true },
     nc: { type: String, required: false, trim: true }
   },
   { timestamps: true }
@@ -55,8 +50,6 @@ const peliculasSchema = new mongoose.Schema(
 
 const Serie = mongoose.model("Serie", seriesSchema, "series");
 const Pelicula = mongoose.model("Pelicula", peliculasSchema, "peliculas");
-
-// ==================== RUTAS: SERIES ====================
 
 app.get("/series", async (req, res) => {
   try {
@@ -79,13 +72,13 @@ app.get("/series/:id", async (req, res) => {
 
 app.post("/series", async (req, res) => {
   try {
-    const { titulo, genero, año, temporadas, episodios, idioma, calificacion, poster, nc } = req.body;
+    const { titulo, genero, año, temporadas, episodios, idioma, calificacion, nc } = req.body;
 
     if (!titulo || !genero || !año || !temporadas || !episodios || !idioma || calificacion === undefined) {
       return res.status(400).json({ mensaje: "Faltan datos de la serie" });
     }
 
-    const nuevaSerie = new Serie({ titulo, genero, año, temporadas, episodios, idioma, calificacion, poster, nc });
+    const nuevaSerie = new Serie({ titulo, genero, año, temporadas, episodios, idioma, calificacion, nc });
     const serieGuardada = await nuevaSerie.save();
 
     res.json({ mensaje: "Serie registrada correctamente", serie: serieGuardada });
@@ -96,7 +89,7 @@ app.post("/series", async (req, res) => {
 
 app.put("/series/:id", async (req, res) => {
   try {
-    const { titulo, genero, año, temporadas, episodios, idioma, calificacion, poster, nc } = req.body;
+    const { titulo, genero, año, temporadas, episodios, idioma, calificacion, nc } = req.body;
 
     if (!titulo || !genero || !año || !temporadas || !episodios || !idioma || calificacion === undefined) {
       return res.status(400).json({ mensaje: "Faltan datos de la serie" });
@@ -104,7 +97,7 @@ app.put("/series/:id", async (req, res) => {
 
     const serieActualizada = await Serie.findByIdAndUpdate(
       req.params.id,
-      { titulo, genero, año, temporadas, episodios, idioma, calificacion, poster, nc },
+      { titulo, genero, año, temporadas, episodios, idioma, calificacion, nc },
       { new: true, runValidators: true }
     );
 
@@ -125,8 +118,6 @@ app.delete("/series/:id", async (req, res) => {
     res.status(500).json({ mensaje: "Error al eliminar la serie", error: error });
   }
 });
-
-// ==================== RUTAS: PELICULAS ====================
 
 app.get("/peliculas", async (req, res) => {
   try {
@@ -149,13 +140,13 @@ app.get("/peliculas/:id", async (req, res) => {
 
 app.post("/peliculas", async (req, res) => {
   try {
-    const { titulo, genero, año, duracion, idioma, calificacion, poster, nc } = req.body;
+    const { titulo, genero, año, duracion, idioma, calificacion, nc } = req.body;
 
     if (!titulo || !genero || !año || !duracion || !idioma || calificacion === undefined) {
       return res.status(400).json({ mensaje: "Faltan datos de la pelicula" });
     }
 
-    const nuevaPelicula = new Pelicula({ titulo, genero, año, duracion, idioma, calificacion, poster, nc });
+    const nuevaPelicula = new Pelicula({ titulo, genero, año, duracion, idioma, calificacion, nc });
     const peliculaGuardada = await nuevaPelicula.save();
 
     res.json({ mensaje: "Pelicula registrada correctamente", pelicula: peliculaGuardada });
@@ -166,7 +157,7 @@ app.post("/peliculas", async (req, res) => {
 
 app.put("/peliculas/:id", async (req, res) => {
   try {
-    const { titulo, genero, año, duracion, idioma, calificacion, poster, nc } = req.body;
+    const { titulo, genero, año, duracion, idioma, calificacion, nc } = req.body;
 
     if (!titulo || !genero || !año || !duracion || !idioma || calificacion === undefined) {
       return res.status(400).json({ mensaje: "Faltan datos de la pelicula" });
@@ -174,7 +165,7 @@ app.put("/peliculas/:id", async (req, res) => {
 
     const peliculaActualizada = await Pelicula.findByIdAndUpdate(
       req.params.id,
-      { titulo, genero, año, duracion, idioma, calificacion, poster, nc },
+      { titulo, genero, año, duracion, idioma, calificacion, nc },
       { new: true, runValidators: true }
     );
 
@@ -195,8 +186,6 @@ app.delete("/peliculas/:id", async (req, res) => {
     res.status(500).json({ mensaje: "Error al eliminar la pelicula", error: error });
   }
 });
-
-// ==================== RUTA RAIZ ====================
 
 app.get("/", (req, res) => {
   res.send("API de Netflix (series y peliculas) funcionando");
